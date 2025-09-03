@@ -1,0 +1,49 @@
+Python Assignment
+
+product = ("Laptop",50000,"Black",'Samsung','Electronics')
+print("Products : ",product)
+
+print(product[1])   #second element in product tuple
+
+result = product[-2:]   #Last two elements
+print(result)
+
+if "Electronics" in product:
+    print("Present")
+else:
+    print("Not Present")
+
+prices = (1000,1500,1200,1200,1100,900)
+print(prices.count(1000))
+
+min = min(prices)
+max = max(prices)
+print("Min : ",min," Max : ",max)
+
+for item in product:
+    print(item)
+
+new_product = list(product)
+new_product[1]=55000
+product = tuple(new_product)
+print(product)
+
+tuple2 = ('In Stock',)
+product = product+tuple2
+print(product)
+
+new_product = list(product)
+new_product.remove("Electronics")
+product = tuple(new_product)
+print(product)
+
+a,b,*rest = product
+print(a,b,*rest)
+
+prod1 = ('iPhone',50000)
+prod2 = ('TV',100000)
+prod3 = ('Fridge',30000)
+
+final_tuple = (prod1,prod2,prod3)  #nested tuple
+print(final_tuple[1][0])
+
