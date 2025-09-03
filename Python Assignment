@@ -1,5 +1,7 @@
 Python Assignment
 
+######Tuples######
+
 product = ("Laptop",50000,"Black",'Samsung','Electronics')
 print("Products : ",product)
 
@@ -46,4 +48,23 @@ prod3 = ('Fridge',30000)
 
 final_tuple = (prod1,prod2,prod3)  #nested tuple
 print(final_tuple[1][0])
+
+######Functions######
+
+num2 = 20
+def fun1(num1):
+    def factorial(a):
+        result = 1
+        for i in range(1,a):
+            result *= i
+        return result
+    def area(a,b):
+        return a*b
+    
+    res1 = factorial(num1)
+    res2 = area(num1,num2)
+    return res1, res2
+
+m, n = fun1(5)
+print(m,n)
 
