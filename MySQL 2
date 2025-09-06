@@ -1,1 +1,67 @@
 MySql Solutions
+
+CREATE DATABASE amdocs;
+
+USE amdocs;
+
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT
+);
+
+CREATE TABLE suppliers (
+    supplier_id SERIAL PRIMARY KEY,
+    supplier_name VARCHAR(100) NOT NULL,
+    contact_email VARCHAR(100),
+    phone VARCHAR(20)
+);
+
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    category_id INT REFERENCES categories(category_id) ,
+    supplier_id INT REFERENCES suppliers(supplier_id) ,
+    price NUMERIC(10, 2) CHECK (price >= 0),
+    stock_quantity INT CHECK (stock_quantity >= 0),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO categories (category_name, description) VALUES
+('Electronics', 'Devices and gadgets'),
+('Books', 'Printed and digital books'),
+('Clothing', 'Apparel and accessories');
+
+INSERT INTO suppliers (supplier_name, contact_email, phone) VALUES
+('Best Supplier Inc.', 'contact@bestsupplier.com', '123-456-7890'),
+('Global Goods', 'sales@globalgoods.com', '987-654-3210');
+
+INSERT INTO products (product_name, category_id, supplier_id, price, stock_quantity) VALUES
+('Smartphone Model X', 1, 1, 699.99, 50),
+('Wireless Headphones', 1, 2, 199.99, 30),
+('Mystery Novel', 2, 1, 14.99, 100),
+('T-shirt Classic', 3, 2, 9.99, 200),
+('E-reader', 1, 1, 129.99, 10);
+
+-- Questions (DDL + DML)
+-- Write SQL to create the three tables: categories, suppliers, and products.
+
+-- (a) Retrieve a list of all products with their category name and supplier name.
+SELECT p.product_name, c.category_name, s.supplier_name
+FROM products AS p, categories AS c, suppliers AS s
+WHERE p.category_id = c.category_id AND p.supplier_id = s.supplier_id;
+
+-- (b) Find all products where stock quantity is below 5.
+SELECT * FROM products
+WHERE stock_quantity<5;
+
+-- (c) Add a new column discount_percent to the products table with a default value of 0.
+ALTER TABLE products 
+ADD COLUMN discount_percent INT DEFAULT 0;
+
+-- (d) Write a query to reduce the price of all products in the "Electronics" category by 15%.
+UPDATE products AS p
+INNER JOIN categories AS c
+ON p.category_id = c.category_id
+SET price = price*85/100
+WHERE category_name="Electronics";
