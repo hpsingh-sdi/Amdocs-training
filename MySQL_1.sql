@@ -1,4 +1,4 @@
-MySQL Assignment 1
+-- MySQL Assignment 1
 
 CREATE DATABASE training;
 
@@ -75,42 +75,52 @@ INSERT INTO orders (customer_id, product_id, order_date, quantity) VALUES
 (4, 1, '2025-08-21', 1),
 (5, 5, '2025-08-22', 2);
 
+-- 1
 SELECT * FROM products WHERE category="Accessories";
 
+-- 2
 SELECT * FROM products ORDER BY price DESC LIMIT 3;
 
+-- 3
 SELECT* FROM products WHERE stock<100;
 
+--4 
 ALTER TABLE products 
 ADD COLUMN Brand VARCHAR(20);
 
-SET SQL_SAFE_UPDATES = 0;
-
+-- 5
 UPDATE products 
 SET Brand = "TechZone"
 WHERE category="Electronics";
 
+-- 6
 ALTER TABLE products
 ADD COLUMN discount DECIMAL(5,2);
 
+-- 7
 SELECT Category, AVG(price)
 FROM products
 GROUP BY category;
 
+-- 8
 SELECT * FROM products
 WHERE created_at LIKE "2025-08%";
 
+-- 9
 SELECT category, COUNT(*)
 FROM products
 WHERE rating > 4.5
 GROUP BY category;
 
+-- 10
 SELECT * FROM products
 ORDER BY rating DESC;
 
+-- 11
 DELETE FROM products
 WHERE stock=0;
 
+--12 
 SELECT p.product_name, SUM(o.quantity)
 FROM products AS p 
 INNER JOIN
@@ -118,6 +128,7 @@ orders AS o
 ON p.product_id = o.product_id
 GROUP BY p.product_name;
 
+-- 13
 SELECT c.customer_name, c.email, c.country, temp.product_name
 FROM customers AS c
 JOIN
