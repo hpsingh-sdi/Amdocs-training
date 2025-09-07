@@ -1,4 +1,4 @@
-MySql Solutions
+-- MySql Solutions
 
 CREATE DATABASE amdocs;
 
@@ -65,3 +65,58 @@ INNER JOIN categories AS c
 ON p.category_id = c.category_id
 SET price = price*85/100
 WHERE category_name="Electronics";
+
+-- Questions (Aggregate, Filtering, Grouping, Sorting)
+-- (e) Find the total number of products available in the products table.
+SELECT COUNT(*) FROM products;
+
+-- (f) Find the average price of all products.
+SELECT AVG(price) FROM products;
+
+-- (g) Find the maximum and minimum price of products in the "Electronics" category.
+SELECT MIN(price), MAX(price) 
+FROM products
+WHERE category_id = (
+SELECT category_id FROM categories WHERE category_name='Electronics');
+
+-- (h) List categories along with the count of products in each category.
+SELECT c.category_name, COUNT(*) AS products
+FROM categories AS c
+INNER JOIN
+products AS p
+ON c.category_id = p.category_id
+GROUP BY c.category_name;
+
+-- (i) List suppliers who supply products priced between $50 and $200.
+SELECT s.supplier_name 
+FROM suppliers AS s, products AS p
+WHERE s.supplier_id = p.supplier_id AND p.price BETWEEN 50 AND 200;
+
+-- (j) Find all products whose category_id is in the list of category IDs (1, 3).
+SELECT * FROM products 
+WHERE category_id IN (1,3);
+
+-- (k) Find the total stock quantity per category but only for categories having more than 1 product.
+SELECT c.category_name, SUM(p.stock_quantity) AS total_stocks
+FROM products AS p, categories AS c
+WHERE p.category_id = c.category_id
+GROUP BY c.category_name
+HAVING COUNT(*) > 1;
+
+-- (l) List all products grouped by supplier and show the average price per supplier, but only for suppliers whose average product price is greater than $100.
+SELECT s.supplier_name, AVG(p.price) AS Average_Price
+FROM products AS p, suppliers AS s
+WHERE p.supplier_id = s.supplier_id
+GROUP BY s.supplier_name
+HAVING AVG(p.price) > 100;
+
+-- (m) List all products sorted by price in descending order.
+SELECT * FROM products
+ORDER BY price DESC;
+
+-- (n) List the total value of stock (price * stock_quantity) for each category, ordered by total value from highest to lowest.
+SELECT c.category_name, SUM(p.price * p.stock_quantity) AS Total_Stock_Value
+FROM categories AS c, products AS p
+WHERE c.category_id = p.category_id
+GROUP BY c.category_name
+ORDER BY Total_Stock_Value DESC;
