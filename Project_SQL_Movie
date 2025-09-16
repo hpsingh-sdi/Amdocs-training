@@ -1,0 +1,44 @@
+CREATE DATABASE movie;
+USE movie;
+
+
+CREATE TABLE users (
+user_id SERIAL PRIMARY KEY,
+username VARCHAR(50) UNIQUE NOT NULL,
+password VARCHAR(100) NOT NULL,
+email VARCHAR(100) UNIQUE NOT NULL,
+phone VARCHAR(15),
+role VARCHAR(10) CHECK (role IN ('USER', 'ADMIN')) DEFAULT 'USER'
+);
+
+CREATE TABLE movies (
+movie_id SERIAL PRIMARY KEY,
+title VARCHAR(100) NOT NULL,
+genre VARCHAR(50),
+language VARCHAR(30),
+duration INT, -- in minutes
+rating DECIMAL(2,1)
+);
+
+CREATE TABLE theatres (
+theatre_id SERIAL PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+city VARCHAR(50) NOT NULL,
+total_seats INT NOT NULL
+);
+
+CREATE TABLE shows (
+show_id SERIAL PRIMARY KEY,
+movie_id INT REFERENCES movies(movie_id) ON DELETE CASCADE,
+theatre_id INT REFERENCES theatres(theatre_id) ON DELETE CASCADE,
+show_time TIMESTAMP NOT NULL,
+available_seats INT
+);
+
+CREATE TABLE bookings (
+booking_id SERIAL PRIMARY KEY,
+user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+show_id INT REFERENCES shows(show_id) ON DELETE CASCADE,
+seats_booked INT NOT NULL,
+booking_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
